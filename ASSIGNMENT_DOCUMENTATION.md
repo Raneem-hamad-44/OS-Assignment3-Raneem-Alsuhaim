@@ -516,13 +516,30 @@ In my scheduler program, I used locks to protect shared counters and logs, and a
 
 **Repository URL**: 
 
-**Number of commits**: 
+**Number of commits**: 8
+
 
 **Commit messages**: 
-1. 
-2. 
-3. 
-4. 
+ 
+
+
+1.Update ASSIGNMENT_DOCUMENTATION with implementation details
+
+2.set my student id:444051957 and my name and the date sub
+
+3.Add runToCompletion method
+
+
+4.Implement run method
+
+5.Add thread-safe logging using ReentrantLock
+
+6.Add thread-safe methods for completed process count and waiting time
+
+7.Add synchronization: ReentrantLocks, Semaphore, and protected counters
+
+8.set my student id:444051957
+
 
 ---
 
