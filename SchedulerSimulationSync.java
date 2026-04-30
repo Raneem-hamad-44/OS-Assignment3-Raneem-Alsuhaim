@@ -200,29 +200,33 @@ class Process implements Runnable {
         bar.append("] ").append(progress).append("%");
         return bar.toString();
     }
-    
     public void runToCompletion() {
-        // TODO: Similar synchronization needed here
+    try {
+        SharedResources.cpuSemaphore.acquire();
         try {
-            System.out.println(Colors.BRIGHT_CYAN + "  ⚡ " + Colors.BOLD + Colors.CYAN + name + 
-                              Colors.RESET + Colors.BRIGHT_CYAN + " is the last process, running to completion" + 
+            System.out.println(Colors.BRIGHT_CYAN + "  ⚡ " + Colors.BOLD + Colors.CYAN + name +
+                              Colors.RESET + Colors.BRIGHT_CYAN + " is the last process, running to completion" +
                               Colors.RESET + " [" + remainingTime + "ms]");
+
             Thread.sleep(remainingTime);
             remainingTime = 0;
             completionTime = System.currentTimeMillis();
-            
+
             long waitingTime = (completionTime - creationTime) - burstTime;
             SharedResources.addWaitingTime(waitingTime);
             SharedResources.incrementCompletedProcess();
-            
-            System.out.println(Colors.BRIGHT_GREEN + "  ✓ " + Colors.BOLD + Colors.CYAN + name + 
+
+            System.out.println(Colors.BRIGHT_GREEN + "  ✓ " + Colors.BOLD + Colors.CYAN + name +
                               Colors.RESET + Colors.BRIGHT_GREEN + " finished execution!" + Colors.RESET);
             System.out.println();
-        } catch (InterruptedException e) {
-            System.out.println(Colors.RED + "  ✗ " + name + " was interrupted." + Colors.RESET);
+
+        } finally {
+            SharedResources.cpuSemaphore.release();
         }
+    } catch (InterruptedException e) {
+        System.out.println(Colors.RED + "  ✗ " + name + " was interrupted." + Colors.RESET);
     }
-    
+}
     public String getName() {
         return name;
     }
